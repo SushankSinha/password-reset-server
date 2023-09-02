@@ -49,10 +49,6 @@ const sendMailVerification = async (name, email, randomString) => {
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
 
-  if (!name || !email || !password ) {
-    res.status(422).json({ error: "Fill the required fields" });
-  }
-
   try {
     const userExist = await User.findOne({ email: email });
 
@@ -80,16 +76,14 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    if (!email || !password) {
-      return res.json({ message: "All fields are required" });
-    }
+
     const user = await User.findOne({ email: email });
     if (!user) {
-      return res.json({ message: "User does not exists" });
+      return res.status(404).json({ message: "User does not exists" });
     } else {
       const auth = await bcrypt.compare(password, user.password);
       if (!auth) {
-        return res.json({ message: "Incorrect credentials" });
+        return res.status(401).json({ message: "Invalid credentials" });
       } else if (auth) {
         res
           .status(200)
@@ -146,7 +140,7 @@ router.post("/user_verification", async (req, res) => {
       const user = await User.findOne({email : email });
      
       if (!user) {
-        res.json({ message: "User does not exists" });
+        res.status(404).json({ message: "User does not exists" });
       } else {
 
       const otpVerification = await User.findOne({ currentOtp: otp });
