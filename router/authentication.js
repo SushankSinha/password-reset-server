@@ -158,7 +158,7 @@ router.post("/user_verification", async (req, res) => {
         }
       });
 
-router.post("/reset_password", async (req, res) => {
+router.put("/reset_password", async (req, res) => {
           try { 
         const { email, password } = req.body;
 
