@@ -168,9 +168,11 @@ router.put("/reset_password", async (req, res) => {
           res.status(404).json({ message: "User does not exists" });
         } else {
 
+        const hash = await bcrypt.hash(password, 12)  
+
         const auth = await User.updateOne(
-          { password: password },
-          { $set: { currentOtp: "" } }
+          { email : email },
+          { $set: { currentOtp: "", password : hash } }
         );
         if (auth) {
           res
