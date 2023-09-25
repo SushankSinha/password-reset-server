@@ -172,7 +172,7 @@ router.put("/reset_password", async (req, res) => {
 
         const auth = await User.updateOne(
           { email : email },
-          { $set: { currentOtp: "", password : hash } }
+          { $set: { currentOtp: "", password : hash } }, {new : true}
         );
         if (auth) {
           res
