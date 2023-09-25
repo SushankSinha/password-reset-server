@@ -171,7 +171,7 @@ router.put("/reset_password", async (req, res) => {
         const hash = await bcrypt.hash(password, 12)  
 
         const auth = await User.findByIdAndUpdate(
-          { email : email }, { $set: { currentOtp: "", password : hash } }, {new : true}
+          { _id : user.id }, { $set: { currentOtp: "", password : hash } }, {new : true}
         );
         if (auth) {
           res
